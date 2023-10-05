@@ -8,7 +8,7 @@ def import_data():
         train_labels
         test_values 
     '''
-    train_values = pd.read_csv('../../data/raw/train_values.csv')
-    train_labels = pd.read_csv('../../data/raw/train_labels.csv')
-    test_values = pd.read_csv('../../data/raw/test_values.csv')
+    train_values = pd.read_csv('./data/raw/train_values.csv')
+    train_labels = pd.read_csv('./data/raw/train_labels.csv')
+    test_values = pd.read_csv('./data/raw/test_values.csv')
     return train_values, train_labels, test_values
