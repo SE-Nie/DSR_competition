@@ -1,0 +1,27 @@
+# Mini-Competition with Paul - Team Triple Bam
+
+## Notes on the Task
+
+### General
+
+- About the earthquake: 25 April 2015 in Nepal with the Epicenter in Gurkha District. Magnitude of 7.8Mw/8.1Ms with approx. 9000 people killed, approx. 22000 injured, and 3.5 mio homeless.
+
+- Data was collected by Nepalese government using mobile technology.
+
+- Goal: Level of damage to buildings caused by 2015 Gorhka earthquake in Nepal 
+		-> Ordinal variable with a multi-label classification, with 1 == lowest, 2 == medium and 3 == highest destruction
+
+- Submission: CSV with building_id,damage_grade -> *important*: damage_grade must be integer, not float, between 1 and 3.
+		
+- Measures by Micro-F1-Score (`sklearn.metrics.f1_score` with the keyword argument `average='micro'`)
+
+### Columns
+
+- To Discuss: *"Categorical variables have been obfuscated random lowercase ascii characters. The appearance of the same character in distinct columns does not imply the same original value."* -> No problem as it refers to cross-column originality.
+
+- 39 Columns, with each row representing on building -> See MindMap
+
+- Lot of NA according to the description
+
+
+
