@@ -20,8 +20,11 @@ var/
 .installed.cfg
 *.egg
 
-#python enivronment
+# python enivronment
 .venv
+
+# conda env
+.conda
 
 # VS Code
 .vscode/
