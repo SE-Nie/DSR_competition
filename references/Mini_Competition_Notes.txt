@@ -24,4 +24,16 @@
 - Lot of NA according to the description
 
 
+### Columns after frist EDA
+
+has_* or use_* are not mutually exclusive!
+
+Micha:
+- Remove one age outlier
+
+Svenja:
+-
+
+Leo:
+- distributions of features... train vs test
 
