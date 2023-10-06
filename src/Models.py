@@ -5,13 +5,15 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score
 from typing import Literal
 
+import xgboost as xgb
+
 # 20231005_Leo
 # This class is meant to calls several sklearn-pipelines. 
 # It is designed to be initialized and used in the main.ipynb.
 
 class Models:
     
-    def __init__(self, model,columns_to_encode):
+    def __init__(self, model, columns_to_encode):
         """
         Constructor for Sklean-Pipelines.
         The following pipelines ares available:
@@ -30,7 +32,7 @@ class Models:
                         transformers=[
                             ('label_encode', OrdinalEncoder(), columns_to_encode)
                             ],
-                            remainder='passthrough'  # Pass columns not specified to the next step
+                            remainder='passthrough'
                         ))
         
         # Define the pipelines
@@ -41,10 +43,28 @@ class Models:
                     ],verbose=True)
             
         elif self.model == "XGBoost":
-            pass
+            self.pipe = Pipeline([
+                    self.encoder,
+                    ('estimator', xgb.XGBClassifier( 
+                                                    n_estimators= 1000,
+                                                    learning_rate= 0.1,
+                                                    max_depth= 5,
+                                                    min_child_weight= 1,
+                                                    subsample= 0.8,
+                                                    colsample_bytree= 0.8,
+                                                    gamma= 0,
+                                                    reg_lambda= 1e-5,
+                                                    alpha= 1e-5,
+                                                    objective= 'binary:logistic',  # for binary classification
+                                                    eval_metric= 'logloss',        # use logloss as the evaluation metric
+                                                    random_state= 42         # set a random seed for reproducibility
+                                                    )
+                     )   # Learning rate = 0.05, 1000 rounds, max depth = 3-5, subsample = 0.8-1.0, colsample_bytree = 0.3 - 0.8, lambda = 0 to 5
+                    ],verbose=True)
         
         elif self.model == "LightGBM":
             pass
+    
     
     def set_estimator_params(self,**kwargs):
         """
