@@ -4,6 +4,8 @@ from sklearn.compose import ColumnTransformer
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score
 import xgboost as xgb
+import pandas as pd
+import numpy as np
 
 # 20231005_Leo
 # This class is meant to calls several sklearn-pipelines.
