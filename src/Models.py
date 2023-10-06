@@ -127,14 +127,16 @@ class MyModel:
 
         return y_predicted
 
-    def predict2submit(self, X):
+    def predict2submit(self, X, X_ids):
         """
         This function conducts the prediction and formats the output for submitting.
         Args:
             X (pandas DataFrame): Data to predict and to submit
         """
         y_predicted = self.predict(X)
-        submit = pd.concat([X.loc[:, "building_id"], pd.Series(y_predicted)], axis=1)
+        submit = pd.concat(
+            [X_ids.loc[:, "building_id"], pd.Series(y_predicted)], axis=1
+        )
         submit.columns = ["building_id", "damage_grade"]
 
         return submit
