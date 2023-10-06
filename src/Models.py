@@ -1,5 +1,8 @@
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
+
+# from category_encoders import
+from sklearn.preprocessing import TargetEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score
@@ -13,7 +16,7 @@ import numpy as np
 
 
 class MyModel:
-    def __init__(self, model, columns_to_encode):
+    def __init__(self, model, columns_to_labelencode, columns_to_targetencode):
         """
         Constructor for Sklean-Pipelines.
         The following pipelines ares available:
@@ -25,13 +28,21 @@ class MyModel:
         """
 
         self.model = model
-        self.columns_to_encode = columns_to_encode
+        self.columns_to_labelencode = columns_to_labelencode
+        self.columns_to_targetencode = columns_to_targetencode
 
         # The Encoder stays the same
         self.encoder = (
             "label_encoder",
             ColumnTransformer(
-                transformers=[("label_encode", OrdinalEncoder(), columns_to_encode)],
+                transformers=[
+                    ("label_encode", OrdinalEncoder(), columns_to_labelencode),
+                    (
+                        "target",
+                        TargetEncoder(random_state=0, target_type="continuous"),
+                        columns_to_targetencode,
+                    ),
+                ],
                 remainder="passthrough",
             ),
         )
