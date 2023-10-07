@@ -2,7 +2,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
 # from category_encoders import
-from sklearn.preprocessing import TargetEncoder
+from sklearn.preprocessing import TargetEncoder, FunctionTransformer
 from sklearn.compose import ColumnTransformer
 from sklearn.tree import DecisionTreeClassifier
 from lightgbm import LGBMClassifier
@@ -11,13 +11,21 @@ import xgboost as xgb
 import pandas as pd
 import numpy as np
 
+from .features.mutiplier import combine_transformer
+
 # 20231005_Leo
 # This class is meant to calls several sklearn-pipelines.
 # It is designed to be initialized and used in the main.ipynb.
 
 
 class MyModel:
-    def __init__(self, model, columns_to_labelencode, columns_to_targetencode):
+    def __init__(
+        self,
+        model,
+        columns_to_labelencode,
+        columns_to_targetencode,
+        columns_to_target_encode_and_combine,
+    ):
         """
         Constructor for Sklean-Pipelines.
         The following pipelines ares available:
@@ -31,6 +39,12 @@ class MyModel:
         self.model = model
         self.columns_to_labelencode = columns_to_labelencode
         self.columns_to_targetencode = columns_to_targetencode
+        self.columns_to_target_encode_and_combine = columns_to_target_encode_and_combine
+
+        # Custom-Encoder
+        self.combine_transformer = combine_transformer(
+            columns_to_target_encode_and_combine
+        )
 
         # The Encoder stays the same
         self.encoder = (
@@ -39,10 +53,11 @@ class MyModel:
                 transformers=[
                     ("label_encode", OrdinalEncoder(), columns_to_labelencode),
                     (
-                        "target",
+                        "target_encode",
                         TargetEncoder(random_state=0, target_type="continuous"),
-                        columns_to_targetencode,
+                        columns_to_targetencode + columns_to_target_encode_and_combine,
                     ),
+                    self.combine_transformer,
                 ],
                 remainder="passthrough",
             ),
