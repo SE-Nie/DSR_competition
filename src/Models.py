@@ -177,4 +177,19 @@ class MyModel:
             float: f1-micro-score
         """
         y_predicted = self.predict(X)
+
         return f1_score(y, y_predicted, average="micro")
+
+    def get_feature_importance(self, X_columns):
+        """
+        Returns a dict of sorted feature importance according to the used estimator model.
+        Args:
+            X_columns (pandas DataFrame): X_train.columns
+
+        Returns:
+            dict: feature_importance
+        """
+        feature_importances = self.pipe.named_steps["estimator"].feature_importances_
+        features = dict(zip(X_columns, feature_importances))
+
+        return dict(sorted(features.items(), key=lambda item: item[1], reverse=True))
