@@ -5,6 +5,7 @@ from sklearn.preprocessing import OrdinalEncoder
 from sklearn.preprocessing import TargetEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.tree import DecisionTreeClassifier
+from lightgbm import LGBMClassifier
 from sklearn.metrics import f1_score
 import xgboost as xgb
 import pandas as pd
@@ -88,6 +89,31 @@ class MyModel:
             )
 
         elif self.model == "LightGBM":
+            self.pipe = Pipeline(
+                [
+                    self.encoder,
+                    (
+                        "estimator",
+                        LGBMClassifier(
+                            boosting_type="gbdt",
+                            num_leaves=31,
+                            max_depth=-1,
+                            learning_rate=0.05,
+                            n_estimators=100,
+                            min_data_in_leaf=20,
+                            feature_fraction=0.8,
+                            bagging_fraction=1.0,
+                            lambda_l1=0.1,
+                            lambda_l2=0.1,
+                            min_child_samples=20,
+                            scale_pos_weight=1.0,
+                        ),
+                    ),
+                ],
+                verbose=True,
+            )
+
+        else:
             pass
 
     def set_estimator_params(self, **kwargs):
