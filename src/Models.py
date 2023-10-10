@@ -24,7 +24,7 @@ class MyModel:
         model,
         columns_to_labelencode,
         columns_to_targetencode,
-        columns_to_target_encode_and_combine,
+        # columns_to_target_encode_and_combine,
     ):
         """
         Constructor for Sklean-Pipelines.
@@ -39,12 +39,12 @@ class MyModel:
         self.model = model
         self.columns_to_labelencode = columns_to_labelencode
         self.columns_to_targetencode = columns_to_targetencode
-        self.columns_to_target_encode_and_combine = columns_to_target_encode_and_combine
+        # self.columns_to_target_encode_and_combine = columns_to_target_encode_and_combine
 
         # Custom-Encoder
-        self.combine_transformer = combine_transformer(
-            columns_to_target_encode_and_combine
-        )
+        # self.combine_transformer = combine_transformer(
+        #    columns_to_target_encode_and_combine
+        # )
 
         # The Encoder stays the same
         self.encoder = (
@@ -55,9 +55,9 @@ class MyModel:
                     (
                         "target_encode",
                         TargetEncoder(random_state=0, target_type="continuous"),
-                        columns_to_targetencode + columns_to_target_encode_and_combine,
+                        columns_to_targetencode,  # + columns_to_target_encode_and_combine,
                     ),
-                    self.combine_transformer,
+                    # self.combine_transformer,
                 ],
                 remainder="passthrough",
             ),
